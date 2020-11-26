@@ -1,23 +1,19 @@
 import pygame
-from knight_visualization.constants import *
+from constants import *
 
 
 # Window Management
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("knight_visualization")
+pygame.display.set_caption("Knight Visualizer")
 
 
-def draw_window(win):
-    win.fill(WHITE)
-
-
-def main(win, width, height):
+def main(window, width, height):
     pygame.init()
     clock = pygame.time.Clock()
 
     while True:
         clock.tick(FPS)
-        draw_window(win)
+        window.fill(WHITE)
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
