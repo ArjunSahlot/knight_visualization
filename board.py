@@ -36,7 +36,7 @@ class Knight:
         mx, my = pygame.mouse.get_pos()
         sq_width, sq_height = self.board.width/self.board.cols, self.board.height/self.board.rows
         if self.moving:
-            col = int(mx / sq_width)
+            col = min(int(mx / sq_width), self.board.cols-1)
             row = int(my / sq_height)
             self.pos = row, col
         for event in events:
@@ -61,11 +61,10 @@ class Board:
     factorx = 60
     factory = 70
 
-    def __init__(self, x, y, width, height, col1, col2):
+    def __init__(self, x, y, width, height):
         self.x, self.y, self.width, self.height = x, y, width, height
         self.rows = self.cols = 8
         self.knight = Knight(self)
-        self.col1, self.col2 = col1, col2
         self.factorx /= 100
         self.factory /= 100
         self.generate_moves()
@@ -76,7 +75,7 @@ class Board:
             self.knight.update_images()
             self.generate_moves()
 
-    def draw(self, window):
+    def draw(self, window, col1, col2):
         sq_width, sq_height = self.width/self.cols, self.height/self.rows
         if self.knight.moving:
             self.generate_moves()
@@ -85,9 +84,9 @@ class Board:
             for col in range(self.cols):
                 dist = self.moves[row][col]
                 if dist:
-                    r = map_range(dist, (0, maximum(self.moves) + 1), (self.col1[0], self.col2[0]))
-                    g = map_range(dist, (0, maximum(self.moves) + 1), (self.col1[1], self.col2[1]))
-                    b = map_range(dist, (0, maximum(self.moves) + 1), (self.col1[2], self.col2[2]))
+                    r = map_range(dist, (1, maximum(self.moves)), (col1[0], col2[0]))
+                    g = map_range(dist, (1, maximum(self.moves)), (col1[1], col2[1]))
+                    b = map_range(dist, (1, maximum(self.moves)), (col1[2], col2[2]))
                     color = (r, g, b)
                 else:
                     color = (134, 216, 119)
